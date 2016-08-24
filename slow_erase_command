@@ -1,0 +1,1 @@
+python /usr/local/lib/python2.7/dist-packages/esptool.py -p /dev/ttyUSB0 -b 57600 erase_flash

@@ -10,6 +10,7 @@
 #include <user_interface.h>
 #include <time.h>
 #include <mem.h>
+//#include <spi_flash.h>
 
 #include "main.h"
 #include "user_config.h"
@@ -17,6 +18,43 @@
 #include "uart.h"
 
 static os_timer_t network_timer;
+
+uint32 ICACHE_FLASH_ATTR
+Enable_QMode(void) {
+}
+
+uint32 ICACHE_FLASH_ATTR
+user_rf_cal_sector_set(void)
+{
+    enum flash_size_map size_map = system_get_flash_size_map();
+    uint32 rf_cal_sec = 0;
+
+    switch (size_map) {
+        case FLASH_SIZE_4M_MAP_256_256:
+            rf_cal_sec = 128 - 8;
+            break;
+
+        case FLASH_SIZE_8M_MAP_512_512:
+            rf_cal_sec = 256 - 5;
+            break;
+
+        case FLASH_SIZE_16M_MAP_512_512:
+        case FLASH_SIZE_16M_MAP_1024_1024:
+            rf_cal_sec = 512 - 5;
+            break;
+
+        case FLASH_SIZE_32M_MAP_512_512:
+        case FLASH_SIZE_32M_MAP_1024_1024:
+            rf_cal_sec = 1024 - 5;
+            break;
+
+        default:
+            rf_cal_sec = 0;
+            break;
+    }
+
+    return rf_cal_sec;
+}
 
 void ICACHE_FLASH_ATTR user_rf_pre_init() {
 }
@@ -164,6 +202,8 @@ void ICACHE_FLASH_ATTR ProcessCommand(char* str) {
 void ICACHE_FLASH_ATTR user_init(void) {
 
 	char msg[50];
+
+	wifi_set_opmode(0);
 
 	uart_init(BIT_RATE_115200,BIT_RATE_115200);
 	uart0_send("\r\n\r\nrBoot Sample Project\r\n");

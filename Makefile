@@ -4,10 +4,10 @@
 #
 
 # use wifi settings from environment or hard code them here
-WIFI_SSID ?= ""
-WIFI_PWD  ?= ""
+WIFI_SSID ?= "DLab"
+WIFI_PWD  ?= "endmill1"
 
-SDK_BASE   ?= /opt/esp-open-sdk/sdk
+SDK_BASE   ?= ../ESP8266_NONOS_SDK
 SDK_LIBDIR  = lib
 SDK_INCDIR  = include
 

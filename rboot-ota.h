@@ -16,8 +16,8 @@ extern "C" {
 #endif
 
 // ota server details
-#define OTA_HOST "192.168.7.5"
-#define OTA_PORT 80
+#define OTA_HOST "192.168.7.55"
+#define OTA_PORT 1337
 #define OTA_ROM0 "rom0.bin"
 #define OTA_ROM1 "rom1.bin"
 // OTA_FILE is not required, but is part of the example
