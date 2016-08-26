@@ -50,6 +50,7 @@ endif
 C_FILES = $(wildcard *.c)
 O_FILES = $(patsubst %.c,$(BUILD_DIR)/%.o,$(C_FILES))
 
+
 all: $(BUILD_DIR) $(FIRMW_DIR) $(FIRMW_DIR)/rom0.bin $(FIRMW_DIR)/rom1.bin
 
 $(BUILD_DIR)/%.o: %.c %.h

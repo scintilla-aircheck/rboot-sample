@@ -10,7 +10,7 @@
 #include <user_interface.h>
 #include <time.h>
 #include <mem.h>
-//#include <spi_flash.h>
+#include <spi_flash.h>
 
 #include "main.h"
 #include "user_config.h"
@@ -199,9 +199,58 @@ void ICACHE_FLASH_ATTR ProcessCommand(char* str) {
 	}
 }
 
+static void ICACHE_FLASH_ATTR test() {
+    char msg[50];
+
+    os_printf("SDK version:%s\n", system_get_sdk_version());
+
+    uint32 c = READ_PERI_REG(0x3FF20E44);
+    os_sprintf(msg, "spi_flash_read: %d\n", c);
+    uart0_send(msg);
+
+    /*uint32 *random_num;
+
+    int r = spi_flash_read(0x3FF20E44, random_num, sizeof(random_num));
+    os_sprintf(msg, "spi_flash_read: %d\n", r);
+    uart0_send(msg);
+    */
+
+    uint32 temp[4]={122324, 14, 15, c};
+    uint32 temp1[4]={0};
+    
+    //int p = spi_flash_read(0xfc000, temp1, sizeof(temp1));
+    int q = spi_flash_read(0x100000, temp1, sizeof(temp1));
+    os_sprintf(msg, "spi_flash_read: %d\n", q);
+    uart0_send(msg);
+
+    os_sprintf(msg, "read :%x, %x, %x, %x\n", temp1[0], temp1[1], temp1[2], temp1[3]);
+    uart0_send(msg);
+
+    //int i = spi_flash_erase_sector(0xfc);
+    int i = spi_flash_erase_sector(0x100);
+    os_sprintf(msg, "spi_flash_erase_sector: %d\n", i);
+    uart0_send(msg);
+
+    //int o = spi_flash_write(0xfc000, temp, sizeof(temp));
+    //int o = spi_flash_write(0x100000, temp, sizeof(temp));
+    //os_sprintf(msg, "spi_flash_write: %d\n", o);
+    //uart0_send(msg);
+
+    //int p = spi_flash_read(0xfc000, temp1, sizeof(temp1));
+    int p = spi_flash_read(0x100000, temp1, sizeof(temp1));
+    os_sprintf(msg, "spi_flash_read: %d\n", p);
+    uart0_send(msg);
+
+    os_sprintf(msg, "read :%x, %x, %x, %x\n", temp1[0], temp1[1], temp1[2], temp1[3]);
+    uart0_send(msg);
+}
+
 void ICACHE_FLASH_ATTR user_init(void) {
 
 	char msg[50];
+	uint8 *buffer;
+	uint8 *write_array = (uint8[]){ 0x00, 0x11, 0x22, 0x33 };
+	uint8 *read_array = (uint8[]){ 0x00, 0x00, 0x00, 0x00 };
 
 	wifi_set_opmode(0);
 
@@ -212,4 +261,14 @@ void ICACHE_FLASH_ATTR user_init(void) {
 
 	uart0_send("type \"help\" and press <enter> for help...\r\n");
 
+	//buffer = (uint8*)os_malloc(4);
+	//if(!buffer) {
+		//return false;
+	//}
+
+	//spi_flash_write(0x100000, (uint32*)((void*)write_array), 4);
+	//spi_flash_read(0x100000, (uint32*)((void*)read_array), 4);
+	//read_array[4] = '\0';
+	//uart0_send((char*)read_array);
+	test();
 }

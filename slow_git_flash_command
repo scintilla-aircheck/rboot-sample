@@ -1,0 +1,1 @@
+python /home/chris/workspace/esptool/esptool.py -p /dev/ttyUSB1 -b 74880 write_flash -fs 32m -ff 80m -fm dio 0x00000 rboot.bin 0x02000 firmware/rom0.bin 0x82000 firmware/rom1.bin 0xFC000 blank4.bin 0x3FC000 ../ESP8266_NONOS_SDK/bin/esp_init_data_default.bin
